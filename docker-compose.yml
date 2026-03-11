@@ -1,0 +1,14 @@
+services:
+  notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pytorch-jupyter-notebook
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/workspace
+      - ${HOME}/.jupyter:/root/.jupyter
+    working_dir: /workspace
+    stdin_open: true
+    tty: true

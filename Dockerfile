@@ -1,24 +1,27 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /workspace
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     build-essential \
     git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
+    curl && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install --upgrade pip && \
-    python -m pip install -r requirements.txt
-
-COPY . .
+    pip install --no-cache-dir \
+    jupyter \
+    numpy \
+    pandas \
+    matplotlib \
+    scikit-learn && \
+    pip install --no-cache-dir \
+    torch \
+    torchvision \
+    torchaudio \
+    --index-url https://download.pytorch.org/whl/cpu
 
 EXPOSE 8888
 
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]

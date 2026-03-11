@@ -1,1 +1,1 @@
-docker build --platform linux/arm64 -t univ_chosun_ml:latest .
+docker compose up --build
